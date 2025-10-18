@@ -32,8 +32,8 @@ An interactive sunburst visualization of the drug discovery pipeline from target
 
 Simply open `index.html` in your browser. No build process or dependencies required!
 ```bash
-git clone https://github.com/YOUR_USERNAME/drug-discovery-pipeline.git
-cd drug-discovery-pipeline
+git clone https://github.com/jubilantsundar/ddtools.git
+cd ddtools
 # Open index.html in your browser
 ```
 
@@ -97,8 +97,8 @@ Created to help the drug discovery community discover and utilize open-source co
 
 ## 📧 Contact & Support
 
-- **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/drug-discovery-pipeline/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/YOUR_USERNAME/drug-discovery-pipeline/discussions)
+- **Issues**: [GitHub Issues](https://github.com/jubilantsundar/drug-discovery-pipeline/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/jubilantsundar/drug-discovery-pipeline/discussions)
 - **Pull Requests**: Always welcome!
 
 ## ⭐ Star History
@@ -116,7 +116,7 @@ If you find this useful, please star the repository to help others discover it!
 ```
 MIT License
 
-Copyright (c) 2025 [Your Name or Organization]
+Copyright (c) 2025 [jubilantsundar]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
