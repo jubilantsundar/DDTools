@@ -1,6 +1,10 @@
 # DDTools
 An interactive sunburst visualization of the drug discovery pipeline from target identification through clinical trials, featuring 100+ curated open-source computational tools.
 
+<img width="1630" height="1392" alt="image" src="https://github.com/user-attachments/assets/d170df71-554a-491b-9bd0-93465693007b" />
+
+
+
 (https://github.com/jubilantsundar/ddtools/blob/main/DDTools.png)
 
 ## 🎯 Features
