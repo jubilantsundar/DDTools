@@ -11,7 +11,7 @@ An interactive sunburst visualization of the drug discovery pipeline from target
 
 ## 🚀 Live Demo
 
-**[View Interactive Chart](https://YOUR_USERNAME.github.io/drug-discovery-pipeline/)**
+**[View Interactive Chart](https://jubilantsundar.github.io/drug-discovery-pipeline/)**
 
 ## 📖 How to Use
 
