@@ -1,6 +1,8 @@
 # DDTools
 An interactive sunburst visualization of the drug discovery pipeline from target identification through clinical trials, featuring 100+ curated open-source computational tools.
 
+https://github.com/jubilantsundar/ddtools/DDTools
+
 ## 🎯 Features
 
 - **6 Drug Discovery Stages**: Target ID → Hit ID → Hit-to-Lead → Lead Optimization → Dev Candidate → Clinical
@@ -108,12 +110,7 @@ If you find this useful, please star the repository to help others discover it!
 ---
 
 **Built with ❤️ for the drug discovery community**
-```
 
----
-
-### File 4: `LICENSE`
-```
 MIT License
 
 Copyright (c) 2025 [jubilantsundar]
