@@ -325,9 +325,7 @@ const DrugDiscoverySunburst = () => {
     const endInner = polarToCartesian(centerX, centerY, innerR, endAngle);
     const startOuter = polarToCartesian(centerX, centerY, outerR, startAngle);
     const endOuter = polarToCartesian(centerX, centerY, outerR, endAngle);
-    
     const largeArc = endAngle - startAngle > 180 ? 1 : 0;
-    
     return [
       `M ${startOuter.x} ${startOuter.y}`,
       `A ${outerR} ${outerR} 0 ${largeArc} 1 ${endOuter.x} ${endOuter.y}`,
@@ -382,48 +380,37 @@ const DrugDiscoverySunburst = () => {
   };
 
   const XIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18"></line>
-      <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
+    React.createElement('svg', { width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" },
+      React.createElement('line', { x1: "18", y1: "6", x2: "6", y2: "18" }),
+      React.createElement('line', { x1: "6", y1: "6", x2: "18", y2: "18" })
+    )
   );
 
   return (
-    <div className="w-full h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
-      <div className="relative">
-        <svg width="800" height="800" viewBox="0 0 800 800">
-          <circle cx={centerX} cy={centerY} r={innerRadius} fill="#1e293b" />
-          <text x={centerX} y={centerY - 30} textAnchor="middle" className="fill-white font-bold text-2xl">
-            Drug Discovery
-          </text>
-          <text x={centerX} y={centerY - 5} textAnchor="middle" className="fill-slate-400 text-base">
-            Pipeline
-          </text>
-          {selectedModality ? (
-            <>
-              <text x={centerX} y={centerY + 25} textAnchor="middle" className="fill-emerald-400 text-sm font-semibold">
-                Modality: {modalities.find(m => m.id === selectedModality)?.name}
-              </text>
-              <text
-                x={centerX}
-                y={centerY + 45}
-                textAnchor="middle"
-                className="fill-slate-500 text-xs cursor-pointer hover:fill-slate-400"
-                onClick={() => {
-                  setSelectedModality(null);
-                  setSelectedStage(null);
-                }}
-              >
-                (click to change)
-              </text>
-            </>
-          ) : (
-            <text x={centerX} y={centerY + 25} textAnchor="middle" className="fill-slate-500 text-xs">
-              Start with Target ID
-            </text>
-          )}
+    React.createElement('div', { className: "w-full h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4" },
+      React.createElement('div', { className: "relative" },
+        React.createElement('svg', { width: "800", height: "800", viewBox: "0 0 800 800" },
+          React.createElement('circle', { cx: centerX, cy: centerY, r: innerRadius, fill: "#1e293b" }),
+          React.createElement('text', { x: centerX, y: centerY - 30, textAnchor: "middle", className: "fill-white font-bold text-2xl" }, "Drug Discovery"),
+          React.createElement('text', { x: centerX, y: centerY - 5, textAnchor: "middle", className: "fill-slate-400 text-base" }, "Pipeline"),
+          selectedModality ? [
+            React.createElement('text', { key: "mod", x: centerX, y: centerY + 25, textAnchor: "middle", className: "fill-emerald-400 text-sm font-semibold" },
+              "Modality: ", modalities.find(m => m.id === selectedModality)?.name
+            ),
+            React.createElement('text', {
+              key: "change",
+              x: centerX,
+              y: centerY + 45,
+              textAnchor: "middle",
+              className: "fill-slate-500 text-xs cursor-pointer hover:fill-slate-400",
+              onClick: () => {
+                setSelectedModality(null);
+                setSelectedStage(null);
+              }
+            }, "(click to change)")
+          ] : React.createElement('text', { x: centerX, y: centerY + 25, textAnchor: "middle", className: "fill-slate-500 text-xs" }, "Start with Target ID"),
 
-          {stages.map((stage, index) => {
+          stages.map((stage, index) => {
             const startAngle = index * anglePerStage;
             const endAngle = (index + 1) * anglePerStage;
             const path = createArc(startAngle, endAngle, innerRadius, middleRadius);
@@ -436,49 +423,41 @@ const DrugDiscoverySunburst = () => {
             const flipText = textRotation > 90 && textRotation < 270;
             const finalRotation = flipText ? textRotation + 180 : textRotation;
             
-            return (
-              <g key={stage.id}>
-                <path
-                  d={path}
-                  fill={stage.color}
-                  stroke="white"
-                  strokeWidth="2"
-                  opacity={isLocked ? 0.3 : (isSelected ? 1 : (selectedStage ? 0.3 : 0.9))}
-                  className={isLocked ? 'cursor-not-allowed' : 'cursor-pointer transition-all duration-300'}
-                  onClick={() => !isLocked && handleStageClick(stage.id)}
-                  onMouseEnter={() => !isLocked && setHoveredSegment(`stage-${stage.id}`)}
-                  onMouseLeave={() => setHoveredSegment(null)}
-                  style={{
-                    filter: hoveredSegment === `stage-${stage.id}` ? 'brightness(1.2)' : 'none'
-                  }}
-                />
-                <text
-                  x={textPos.x}
-                  y={textPos.y}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  className="fill-white font-semibold text-sm pointer-events-none"
-                  transform={`rotate(${finalRotation}, ${textPos.x}, ${textPos.y})`}
-                >
-                  {stage.name}
-                </text>
-                {isLocked && (
-                  <text
-                    x={textPos.x}
-                    y={textPos.y + 15}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    className="fill-slate-300 text-xs pointer-events-none"
-                    transform={`rotate(${finalRotation}, ${textPos.x}, ${textPos.y + 15})`}
-                  >
-                    🔒
-                  </text>
-                )}
-              </g>
+            return React.createElement('g', { key: stage.id },
+              React.createElement('path', {
+                d: path,
+                fill: stage.color,
+                stroke: "white",
+                strokeWidth: "2",
+                opacity: isLocked ? 0.3 : (isSelected ? 1 : (selectedStage ? 0.3 : 0.9)),
+                className: isLocked ? 'cursor-not-allowed' : 'cursor-pointer transition-all duration-300',
+                onClick: () => !isLocked && handleStageClick(stage.id),
+                onMouseEnter: () => !isLocked && setHoveredSegment(`stage-${stage.id}`),
+                onMouseLeave: () => setHoveredSegment(null),
+                style: {
+                  filter: hoveredSegment === `stage-${stage.id}` ? 'brightness(1.2)' : 'none'
+                }
+              }),
+              React.createElement('text', {
+                x: textPos.x,
+                y: textPos.y,
+                textAnchor: "middle",
+                dominantBaseline: "middle",
+                className: "fill-white font-semibold text-sm pointer-events-none",
+                transform: `rotate(${finalRotation}, ${textPos.x}, ${textPos.y})`
+              }, stage.name),
+              isLocked && React.createElement('text', {
+                x: textPos.x,
+                y: textPos.y + 15,
+                textAnchor: "middle",
+                dominantBaseline: "middle",
+                className: "fill-slate-300 text-xs pointer-events-none",
+                transform: `rotate(${finalRotation}, ${textPos.x}, ${textPos.y + 15})`
+              }, "🔒")
             );
-          })}
+          }),
 
-          {selectedStage && !showModalitySelector && stages.map((stage, stageIndex) => {
+          selectedStage && !showModalitySelector && stages.map((stage, stageIndex) => {
             if (stage.id !== selectedStage) return null;
             
             const methods = getCurrentMethods(stage);
@@ -502,173 +481,156 @@ const DrugDiscoverySunburst = () => {
               const flipMethodText = textRotation > 90 && textRotation < 270;
               const finalMethodRotation = flipMethodText ? textRotation + 180 : textRotation;
               
-              return (
-                <g key={`${stage.id}-${methodIndex}`}>
-                  <path
-                    d={path}
-                    fill={methodColor}
-                    stroke="white"
-                    strokeWidth="1"
-                    opacity={0.95}
-                    className={hasGithubRepos ? "transition-all duration-300 cursor-pointer" : "transition-all duration-300"}
-                    onMouseEnter={(e) => {
-                      setHoveredSegment(`method-${stage.id}-${methodIndex}`);
-                      if (!hasGithubRepos && methodDescriptions[method]) {
-                        setHoveredMethod(method);
-                        setTooltipPosition({ x: e.clientX, y: e.clientY });
-                      }
-                    }}
-                    onMouseLeave={() => {
-                      setHoveredSegment(null);
-                      setHoveredMethod(null);
-                    }}
-                    onClick={() => {
-                      if (hasGithubRepos) {
-                        setSelectedMethod(method);
-                        setShowGithubRepos(true);
-                      }
-                    }}
-                    style={{
-                      filter: hoveredSegment === `method-${stage.id}-${methodIndex}` ? 'brightness(1.3)' : 'none'
-                    }}
-                  />
-                  <text
-                    x={textPos.x}
-                    y={textPos.y}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    className="fill-white font-medium text-xs pointer-events-none"
-                    transform={`rotate(${finalMethodRotation}, ${textPos.x}, ${textPos.y})`}
-                  >
-                    {method}
-                  </text>
-                </g>
+              return React.createElement('g', { key: `${stage.id}-${methodIndex}` },
+                React.createElement('path', {
+                  d: path,
+                  fill: methodColor,
+                  stroke: "white",
+                  strokeWidth: "1",
+                  opacity: 0.95,
+                  className: hasGithubRepos ? "transition-all duration-300 cursor-pointer" : "transition-all duration-300",
+                  onMouseEnter: (e) => {
+                    setHoveredSegment(`method-${stage.id}-${methodIndex}`);
+                    if (!hasGithubRepos && methodDescriptions[method]) {
+                      setHoveredMethod(method);
+                      setTooltipPosition({ x: e.clientX, y: e.clientY });
+                    }
+                  },
+                  onMouseLeave: () => {
+                    setHoveredSegment(null);
+                    setHoveredMethod(null);
+                  },
+                  onClick: () => {
+                    if (hasGithubRepos) {
+                      setSelectedMethod(method);
+                      setShowGithubRepos(true);
+                    }
+                  },
+                  style: {
+                    filter: hoveredSegment === `method-${stage.id}-${methodIndex}` ? 'brightness(1.3)' : 'none'
+                  }
+                }),
+                React.createElement('text', {
+                  x: textPos.x,
+                  y: textPos.y,
+                  textAnchor: "middle",
+                  dominantBaseline: "middle",
+                  className: "fill-white font-medium text-xs pointer-events-none",
+                  transform: `rotate(${finalMethodRotation}, ${textPos.x}, ${textPos.y})`
+                }, method)
               );
             });
-          })}
-        </svg>
+          })
+        ),
 
-        {showModalitySelector && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-slate-800 bg-opacity-95 backdrop-blur rounded-2xl p-8 shadow-2xl border-2 border-slate-600 max-w-2xl">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-white">Select Drug Modality</h2>
-                <button
-                  onClick={() => setShowModalitySelector(false)}
-                  className="text-slate-400 hover:text-white transition-colors"
-                >
-                  <XIcon />
-                </button>
-              </div>
-              <p className="text-slate-300 mb-6 text-sm">
-                Choose the therapeutic modality to explore modality-specific methods for Hit ID, Hit-to-Lead, and Lead Optimization stages.
-              </p>
-              <div className="grid grid-cols-2 gap-4">
-                {modalities.map(modality => (
-                  <button
-                    key={modality.id}
-                    onClick={() => handleModalitySelect(modality.id)}
-                    className="p-4 rounded-lg border-2 border-slate-600 hover:border-slate-400 transition-all hover:scale-105 text-left"
-                    style={{ backgroundColor: modality.color + '20' }}
-                  >
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-3xl">{modality.icon}</span>
-                      <span className="font-semibold text-white">{modality.name}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        showModalitySelector && React.createElement('div', { className: "absolute inset-0 flex items-center justify-center" },
+          React.createElement('div', { className: "bg-slate-800 bg-opacity-95 backdrop-blur rounded-2xl p-8 shadow-2xl border-2 border-slate-600 max-w-2xl" },
+            React.createElement('div', { className: "flex justify-between items-center mb-6" },
+              React.createElement('h2', { className: "text-2xl font-bold text-white" }, "Select Drug Modality"),
+              React.createElement('button', {
+                onClick: () => setShowModalitySelector(false),
+                className: "text-slate-400 hover:text-white transition-colors"
+              }, React.createElement(XIcon))
+            ),
+            React.createElement('p', { className: "text-slate-300 mb-6 text-sm" },
+              "Choose the therapeutic modality to explore modality-specific methods for Hit ID, Hit-to-Lead, and Lead Optimization stages."
+            ),
+            React.createElement('div', { className: "grid grid-cols-2 gap-4" },
+              modalities.map(modality =>
+                React.createElement('button', {
+                  key: modality.id,
+                  onClick: () => handleModalitySelect(modality.id),
+                  className: "p-4 rounded-lg border-2 border-slate-600 hover:border-slate-400 transition-all hover:scale-105 text-left",
+                  style: { backgroundColor: modality.color + '20' }
+                },
+                  React.createElement('div', { className: "flex items-center gap-3 mb-2" },
+                    React.createElement('span', { className: "text-3xl" }, modality.icon),
+                    React.createElement('span', { className: "font-semibold text-white" }, modality.name)
+                  )
+                )
+              )
+            )
+          )
+        ),
 
-        {showGithubRepos && selectedMethod && selectedModality && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-slate-800 bg-opacity-95 backdrop-blur rounded-2xl p-8 shadow-2xl border-2 border-slate-600 max-w-3xl max-h-[80vh] overflow-y-auto">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h2 className="text-2xl font-bold text-white">{selectedMethod}</h2>
-                  <p className="text-slate-400 text-sm mt-1">Open Source Tools for {modalities.find(m => m.id === selectedModality)?.name}</p>
-                </div>
-                <button
-                  onClick={() => {
-                    setShowGithubRepos(false);
-                    setSelectedMethod(null);
-                  }}
-                  className="text-slate-400 hover:text-white transition-colors"
-                >
-                  <XIcon />
-                </button>
-              </div>
-              <div className="space-y-3">
-                {githubRepos[selectedModality][selectedMethod]?.map((repo, idx) => (
-                  
-                    key={idx}
-                    href={repo.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block p-4 bg-slate-700 hover:bg-slate-600 rounded-lg border border-slate-600 hover:border-blue-400 transition-all group"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                          </svg>
-                          <h3 className="font-semibold text-white group-hover:text-blue-300 transition-colors">
-                            {repo.name}
-                          </h3>
-                        </div>
-                        <p className="text-slate-300 text-sm">{repo.desc}</p>
-                      </div>
-                      <svg className="w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        showGithubRepos && selectedMethod && selectedModality && React.createElement('div', { className: "absolute inset-0 flex items-center justify-center" },
+          React.createElement('div', { className: "bg-slate-800 bg-opacity-95 backdrop-blur rounded-2xl p-8 shadow-2xl border-2 border-slate-600 max-w-3xl max-h-[80vh] overflow-y-auto" },
+            React.createElement('div', { className: "flex justify-between items-center mb-6" },
+              React.createElement('div', null,
+                React.createElement('h2', { className: "text-2xl font-bold text-white" }, selectedMethod),
+                React.createElement('p', { className: "text-slate-400 text-sm mt-1" },
+                  "Open Source Tools for ", modalities.find(m => m.id === selectedModality)?.name
+                )
+              ),
+              React.createElement('button', {
+                onClick: () => {
+                  setShowGithubRepos(false);
+                  setSelectedMethod(null);
+                },
+                className: "text-slate-400 hover:text-white transition-colors"
+              }, React.createElement(XIcon))
+            ),
+            React.createElement('div', { className: "space-y-3" },
+              githubRepos[selectedModality][selectedMethod]?.map((repo, idx) =>
+                React.createElement('a', {
+                  key: idx,
+                  href: repo.url,
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  className: "block p-4 bg-slate-700 hover:bg-slate-600 rounded-lg border border-slate-600 hover:border-blue-400 transition-all group"
+                },
+                  React.createElement('div', { className: "flex items-start justify-between" },
+                    React.createElement('div', { className: "flex-1" },
+                      React.createElement('div', { className: "flex items-center gap-2 mb-1" },
+                        React.createElement('svg', { className: "w-5 h-5 text-white", fill: "currentColor", viewBox: "0 0 24 24" },
+                          React.createElement('path', { d: "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" })
+                        ),
+                        React.createElement('h3', { className: "font-semibold text-white group-hover:text-blue-300 transition-colors" }, repo.name)
+                      ),
+                      React.createElement('p', { className: "text-slate-300 text-sm" }, repo.desc)
+                    ),
+                    React.createElement('svg', { className: "w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors flex-shrink-0 ml-2", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24" },
+                      React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" })
+                    )
+                  )
+                )
+              )
+            )
+          )
+        ),
 
-        {hoveredMethod && methodDescriptions[hoveredMethod] && (
-          <div 
-            className="fixed z-50 bg-slate-900 text-white px-4 py-2 rounded-lg shadow-xl border border-slate-600 max-w-xs text-sm pointer-events-none"
-            style={{
-              left: `${tooltipPosition.x + 10}px`,
-              top: `${tooltipPosition.y + 10}px`
-            }}
-          >
-            <div className="font-semibold mb-1">{hoveredMethod}</div>
-            <div className="text-slate-300 text-xs">{methodDescriptions[hoveredMethod]}</div>
-          </div>
-        )}
+        hoveredMethod && methodDescriptions[hoveredMethod] && React.createElement('div', {
+          className: "fixed z-50 bg-slate-900 text-white px-4 py-2 rounded-lg shadow-xl border border-slate-600 max-w-xs text-sm pointer-events-none",
+          style: {
+            left: `${tooltipPosition.x + 10}px`,
+            top: `${tooltipPosition.y + 10}px`
+          }
+        },
+          React.createElement('div', { className: "font-semibold mb-1" }, hoveredMethod),
+          React.createElement('div', { className: "text-slate-300 text-xs" }, methodDescriptions[hoveredMethod])
+        ),
 
-        <div className="absolute top-4 left-4 bg-slate-800 bg-opacity-90 rounded-lg p-4 text-white max-w-xs">
-          <div className="flex justify-between items-center mb-2">
-            <div className="text-sm font-semibold">How to use:</div>
-            <button
-              onClick={() => setShowLegend(!showLegend)}
-              className="text-slate-400 hover:text-white transition-colors text-xs"
-            >
-              {showLegend ? 'Hide' : 'Show'}
-            </button>
-          </div>
-          {showLegend && (
-            <div className="text-xs space-y-1 text-slate-300">
-              <p>1. Click <strong>1. Target ID</strong> to explore methods</p>
-              <p>2. Click <strong>2. Hit ID</strong> to select modality</p>
-              <p>3. Click Hit ID methods for GitHub tools</p>
-              <p>4. Hover over any method for description</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+        React.createElement('div', { className: "absolute top-4 left-4 bg-slate-800 bg-opacity-90 rounded-lg p-4 text-white max-w-xs" },
+          React.createElement('div', { className: "flex justify-between items-center mb-2" },
+            React.createElement('div', { className: "text-sm font-semibold" }, "How to use:"),
+            React.createElement('button', {
+              onClick: () => setShowLegend(!showLegend),
+              className: "text-slate-400 hover:text-white transition-colors text-xs"
+            }, showLegend ? 'Hide' : 'Show')
+          ),
+          showLegend && React.createElement('div', { className: "text-xs space-y-1 text-slate-300" },
+            React.createElement('p', null, "1. Click ", React.createElement('strong', null, "1. Target ID"), " to explore methods"),
+            React.createElement('p', null, "2. Click ", React.createElement('strong', null, "2. Hit ID"), " to select modality"),
+            React.createElement('p', null, "3. Click Hit ID methods for GitHub tools"),
+            React.createElement('p', null, "4. Hover over any method for description")
+          )
+        )
+      )
+    )
   );
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(DrugDiscoverySunburst));
 
+                                           
