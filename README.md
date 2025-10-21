@@ -15,6 +15,8 @@ An interactive sunburst visualization of the drug discovery pipeline from target
 
 **[View Interactive Chart](https://jubilantsundar.github.io/ddtools/)**
 
+Another chart named DDTools DMTA (https://jubilantsundar.github.io/ddtools_dmta) is a focused companion to DDTools, providing an interactive sunburst chart specifically organized around the DMTA cycle workflow used in medicinal chemistry and drug discovery.
+
 ## 📖 How to Use
 
 1. **Start**: Click **"1. Target ID"** to explore target identification methods
